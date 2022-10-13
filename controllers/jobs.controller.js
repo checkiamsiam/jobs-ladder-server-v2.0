@@ -46,7 +46,7 @@ module.exports.findSpecificJob = async (req, res, next) => {
 };
 module.exports.getSpecificWithManager = async (req, res, next) => {
   try {
-    const job = await Job.findById(req.params.id).populate("postedBy.id" , "-password");
+    const job = await Job.findById(req.params.id).populate("postedBy.id", "-password");
     res.send({ success: true, data: job });
   } catch (error) {
     next(error);
@@ -60,6 +60,20 @@ module.exports.updateJob = async (req, res, next) => {
     }
     await Job.findByIdAndUpdate(req.params.id, { $set: req.body });
     res.json({ success: true, message: "data updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports.applyJob = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.user.id);
+    const isApplied = await user.jobApplied.includes(req.params.id);
+    if (isApplied) {
+      return res.status(500).json({ success: false, message: "already applied" });
+    }
+    await Job.findByIdAndUpdate(req.params.id, { $push: { candidates: { name: req.user.name, id: req.user.id } } });
+    await UserModel.findByIdAndUpdate(req.user.id, { $push: { jobApplied: req.params.id } });
+    res.json({ success: true, message: "successfully applied" });
   } catch (error) {
     next(error);
   }
