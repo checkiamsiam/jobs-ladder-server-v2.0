@@ -31,7 +31,16 @@ const userSchema = mongoose.Schema(
         message: "role can't be {VALUE} . must be hr/candidate/admin",
       },
     },
+    jobPosts: [{
+      type : mongoose.Schema.Types.ObjectId,
+      ref: "Job"
+    }],
+    jobApplied: [{
+      type : mongoose.Schema.Types.ObjectId,
+      ref: "Job"
+    }],
   },
+  
 
   { timestamps: true }
 );
