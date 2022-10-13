@@ -38,18 +38,9 @@ const jobSchema = mongoose.Schema(
       min: 0,
       required: [true, "Salary is a required field..!"],
     },
-    deadline: {
-      type: Date,
-      required: [true, "Deadline is required in this format: YYYY-MM-DD"],
-      match: [
-        /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/,
-        "Must be follow this pattern: YYYY-MM-DD",
-      ],
-      min: Date.now(),
-    },
     postedBy: {
       name: String,
-      id: { type: ObjectId, required: true, ref: "User" },
+      id: { type: ObjectId,  ref: "User" },
     },
     candidates: [
       {
