@@ -26,7 +26,7 @@ mongoose
   });
 
 // using routes
-fs.readdirSync("./routes").map((route) => app.use("/api/v1", require("./routes/" + route)));
+fs.readdirSync("./routes").map((route) => app.use("/", require("./routes/" + route)));
 
 // root
 app.get("/", (req, res) => {
